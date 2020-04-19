@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+  <script type="text/javascript">
+    function refresh() {
+      var req = new XMLHttpRequest();
+      console.log("Grabbing Value");
+      req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+          document.getElementById('matrix-shoutbox').innerText = req.responseText;
+        }
+      }
+      req.open("GET", 'msg.txt', true);
+      req.send(null);
+    }
+
+    function init() {
+      refresh()
+      var int = self.setInterval(function () {
+        refresh()
+      }, 1000);
+    }
+  </script>
+</head>
+
+<body onload="init()">
+  <div id="main">
+    <div id="updateMe">
+      <h2>Shout out to Radio Rymd!</h2>
+	<form>
+        <input id="msg"></input>
+        <button id="button">send</button>
+	</form>
+    <span id="send">transmitting...</span>
+      <pre id="matrix-shoutbox"></pre>
+    </div>
+  </div>
+</body>
+</html>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#send').hide();
+});
+$("button").click(function(e) {
+    var msg = $("input#textfield").val()
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "/shoutout",
+        data: {signal:msg},
+        success: function(result) {
+            $('#send').show(1500);
+            $('#send').hide(1500);
+            alert('ok');
+        },
+        error: function(result) {
+            alert('error');
+        }
+    });
+});
+</script>

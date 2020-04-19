@@ -1,0 +1,5 @@
+matrixserver=""
+username=""
+password=""
+room_id=""
+display_name=""
